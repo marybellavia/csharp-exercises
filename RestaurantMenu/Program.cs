@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace RestaurantMenu
 {
@@ -29,18 +30,15 @@ namespace RestaurantMenu
         public MenuItem(string name)
             : this(name, null, 10.99, null, DateTime.Now) { }
 
-        public string IsNew()
+        public bool IsNew(DateTime fromWhen)
         {
-            DateTime notNewDate = new DateTime(2019, 11, 19, 0, 0, 0);
-            int result = DateTime.Compare(this.DateAdded, notNewDate);
-
-            if (result >= 0)
+            if (DateTime.Compare(fromWhen, DateAdded) <= 0)
             {
-                return "new";
+                return true;
             }
             else
             {
-                return "old";
+                return false;
             }
         }
 
@@ -48,8 +46,7 @@ namespace RestaurantMenu
         {
             //string turd = $"***** \nName: {Name} \nDescription: {Description} \n" +
             //    $"Price: {Price} \n*****";
-            string turd = $"{Name}";
-            return turd;
+            return $"{Name}";
         }
 
         public override bool Equals(object obj)
@@ -114,6 +111,12 @@ namespace RestaurantMenu
             LastUpdated = DateTime.Now;
         }
 
+        public MenuItem GetNewestItem()
+        {
+            MenuItem first = Items.OrderByDescending(x => x.DateAdded).FirstOrDefault();
+            return first;
+        }
+
         public override string ToString()
         { 
             string menuList = "";
@@ -159,18 +162,21 @@ namespace RestaurantMenu
             Menu pastaHouse = new Menu(
                 "Pasta House",
                 null,
-                DateTime.Now);
+                new DateTime(2019, 12,16, 0, 0, 0));
+
+            DateTime timeTime = DateTime.Now;
 
             pastaHouse.AddMenuItem(pasta);
             pastaHouse.AddMenuItem(bananasfoster);
 
-            Console.WriteLine(bananasfoster.IsNew());
-            Console.WriteLine(pasta.IsNew());
+            Console.WriteLine(bananasfoster.IsNew(timeTime));
+            Console.WriteLine(pasta.IsNew(timeTime));
 
-            Console.WriteLine(bananasfoster.ToString());
+            Console.WriteLine(bananasfoster.ToString()); 
 
             Console.WriteLine(pastaHouse.ToString());
 
+            Console.WriteLine(pastaHouse.GetNewestItem());
 
             //Console.WriteLine($"Restaurant name: {pastaHouse.Name}");
 
