@@ -67,7 +67,8 @@ namespace School
             bool compare = false;
             Student studentObj = obj as Student;
 
-            if (obj.GetType() != this.GetType())
+            if (obj == null
+                || (obj.GetType() != this.GetType()))
             {
                 return false;
             }
@@ -80,6 +81,11 @@ namespace School
 
             return compare;
 
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode() * 1000 + StudentId; 
         }
 
         public static double GetCreditsPerYear()
@@ -194,9 +200,12 @@ namespace School
             Console.WriteLine("Student ToString: " + st.ToString());
             Console.WriteLine($"Student ToString: {st}");
 
-            Console.WriteLine($"1. {st.Equals(st2)}");
+            Console.WriteLine($"1. {st.Equals(c1)}");
             Console.WriteLine($"2. {st.Equals(st4)}");
             Console.WriteLine("3. " + st.Equals(new Student("Mary", 0)));
+
+            Console.WriteLine(st.GetHashCode() + " " + st2.GetHashCode());
+            Console.WriteLine(new Student("Mary", 0).GetHashCode());
         }
     }
 }
