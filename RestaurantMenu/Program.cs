@@ -44,15 +44,14 @@ namespace RestaurantMenu
 
         public override string ToString()
         {
-            //string turd = $"***** \nName: {Name} \nDescription: {Description} \n" +
-            //    $"Price: {Price} \n*****";
-            return $"{Name}";
+            string turd = $"*****\n{Name} - {Description} \nPrice: ${Price} \nCategories: {String.Join(", ", Category)} \n****";
+
+            return turd;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object obj) 
         {
-            bool compare = false;
-            MenuItem itemObj = obj as MenuItem;
+            MenuItem itemObj;
 
             if (obj == null
                 || (obj.GetType() != this.GetType()))
@@ -60,13 +59,10 @@ namespace RestaurantMenu
                 return false;
             }
 
-            if (this.Name == itemObj.Name
-                && this.Description == itemObj.Description)
-            {
-                compare = true;
-            }
+            itemObj = obj as MenuItem;
 
-            return compare;
+            return (this.Name == itemObj.Name
+                && this.Description == itemObj.Description);
         }
     }
 
@@ -121,17 +117,18 @@ namespace RestaurantMenu
         { 
             string menuList = "";
 
-            foreach (object item in Items)
+            foreach (MenuItem item in Items)
             {
-                if (Items[Items.Count -1] == item)
+                if (Items[Items.Count - 1] == item)
                 {
-                    menuList += $"{item}.";
+                    menuList += $"{item.Name}.";
                 }
                 else
                 {
-                    menuList += $"{item}, ";
+                    menuList += $"{item.Name}, ";
                 }
             }
+
             string turd = $"***** \nRestaurant Name: {Name} \nMenu Items: {menuList} \n" +
                 $"Menu Last Updated: {LastUpdated} \n*****";
             return turd;
